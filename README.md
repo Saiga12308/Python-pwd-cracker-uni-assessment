@@ -1,2 +1,1 @@
-# PyCA
-python ICA
+Python ver 3.10
