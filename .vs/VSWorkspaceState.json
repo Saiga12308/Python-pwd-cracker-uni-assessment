@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\cls"
+    "\\cls",
+    "\\lst"
   ],
-  "SelectedNode": "\\cls\\pwdcrack.py",
+  "SelectedNode": "\\cls\\word_variants.py",
   "PreviewInSolutionExplorer": false
 }
