@@ -1,6 +1,6 @@
 ﻿import cls
 import os
-import multiprocessing
+import multiprocessing as mp
 
 #get pw hash and salt
 #go into dict and get first line
@@ -21,14 +21,11 @@ import multiprocessing
 def crack_password(pwds, dict_file):
     #function for loops for cracking password. done this way to be able to utilise multiprocessing
 
-    #loop of going through each password
     for line in pwds:
-
         #0 = id, 1 = my name and student no, 2 = salt, 3 = hashed pwd
         lst_pwd = line.split(":")
 
         for line in dict_file:
-
             #ignoring comments and words too short to be used in a password
             word = line.strip()
             if not word.startswith("#") and len(word) >= 7:
@@ -46,40 +43,28 @@ dict_file = open(dict_path, "r")
 #putting full file into memory (only 41kb, so it won't be an issue)
 lines = pwds.readlines()
 
+#tfw preventing memory leaks
 pwds.close()
 
+#used later for long math sequence
 len_pwd_file = len(lines)
 
-#taking sections of it to pass into function so each process can work on 100 passwords at a time
-#this is dynamic, but still assumes that the no of passwords is a multiple of 5. still better than hard-coding ig
-lines1 = lines[0:(len_pwd_file*(1/5))-1]
-lines2 = lines[len_pwd_file*(1/5):(len_pwd_file*(2/5))-1]
-lines3 = lines[len_pwd_file*(2/5):(len_pwd_file*(3/5))-1]
-lines4 = lines[len_pwd_file*(3/5):(len_pwd_file*(4/5))-1]
-lines5 = lines[len_pwd_file*(4/5):len_pwd_file-1]
-
-#clearing the file from memory
-del lines
+#to store processes so I can wait on them
+process_list = []
 
 #creating the processes
-p1 = multiprocessing.Process(target=crack_password, args=(lines1, dict_file))
-p2 = multiprocessing.Process(target=crack_password, args=(lines2, dict_file))
-p3 = multiprocessing.Process(target=crack_password, args=(lines3, dict_file))
-p4 = multiprocessing.Process(target=crack_password, args=(lines4, dict_file))
-p5 = multiprocessing.Process(target=crack_password, args=(lines5, dict_file))
-
-#starting the processes
-p1.start()
-p2.start()
-p3.start()
-p4.start()
-p5.start()
+if __name__ == "__main__":
+    mp.set_start_method("spawn")
+    for i in range(20):
+        #this long section of math is a way to divide up the passwords between the processes
+        p = mp.Process(target=crack_password, args=(lines[(i/20) * len_pwd_file : (((i+1) / 20) * len_pwd_file) -1], dict_file))
+        p.start()
+        process_list.append(p)
 
 #waits for all processes to finish before continuing
-p1.join()
-p2.join()
-p3.join()
-p4.join()
-p5.join()
+for process in process_list:
+    process.join()
 
+#clearing the file from memory and closing the dictionary file
+del lines
 dict_file.close()

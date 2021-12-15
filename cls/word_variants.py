@@ -12,6 +12,7 @@
     #replace i's with !, add to list with salt added at start and end
     #replace o's with 0, add to list with salt added at start and end
     #replace e's with 3, add to list with salt added at start and end
+    #replace s's with $, add to list with salt added at start and end
 
 
     pass
