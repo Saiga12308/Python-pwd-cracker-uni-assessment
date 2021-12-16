@@ -2,20 +2,9 @@
 import os
 import multiprocessing as mp
 
-#get pw hash and salt
-#go into dict and get first line
-#check if 7 chars or more
+def write_pw_to_file(q, id, password):
+    correct_passwords = open("correct_pws.txt", "a")
 
-#if not, ignore
-#if 7 chars, add "1" to end then try with salt added to beginning and end
-#if 8 chars or more, try as is with salt added to beginning and end
-
-#if doesn't work, attempt with a variety of mangling rules
-
-#if still doesn't work, move on to next line in dict and repeat
-
-#if it finds a match, save to file
-#if it gets to end of dict and finds no match, move on to next pw
 
 
 def crack_password(pwds, dict_file):
@@ -23,12 +12,18 @@ def crack_password(pwds, dict_file):
 
     for line in pwds:
         #0 = id, 1 = my name and student no, 2 = salt, 3 = hashed pwd
-        lst_pwd = line.split(":")
+        split_pwd = line.split(":")
 
         for line in dict_file:
-            #ignoring comments and words too short to be used in a password
+            #ignoring comments
             word = line.strip()
-            if not word.startswith("#") and len(word) >= 7:
+            if not word.startswith("#"):
+                if len(split_pwd[3]) == 32:
+                    hashes = cls.word_variants.word_variant_hashed(line, split_pwd[2])
+                if len(split_pwd[3]) == 64:
+                    hashes = cls.word_variants.word_variant_hashed(line, split_pwd[2], False)
+
+                if split_pwd[3] in hashes:
 
 
 #getting relative path to the files and opening them
@@ -40,10 +35,8 @@ dict_path = os.path.relpath("lst\\ow_tiny_lower.lst", cur_path)
 pwds = open(lst_path, "r")
 dict_file = open(dict_path, "r")
 
-#putting full file into memory (only 41kb, so it won't be an issue)
+#putting full file into memory to divide between processes (only 41kb, so it won't be an issue)
 lines = pwds.readlines()
-
-#tfw preventing memory leaks
 pwds.close()
 
 #used later for long math sequence
@@ -55,6 +48,7 @@ process_list = []
 #creating the processes
 if __name__ == "__main__":
     mp.set_start_method("spawn")
+
     for i in range(20):
         #this long section of math is a way to divide up the passwords between the processes
         p = mp.Process(target=crack_password, args=(lines[(i/20) * len_pwd_file : (((i+1) / 20) * len_pwd_file) -1], dict_file))
