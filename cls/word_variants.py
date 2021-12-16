@@ -34,22 +34,20 @@
                 else:
                     variant_list.append(word_var.replace(munging_combos[key].upper(), key))
 
-            #using new switch statement in python 3.10
-            match i:
-                case 0:
-                    #capitalizes first char for second run
-                    word_var = word.capitalize()
-                case 1:
-                    #capitalizes last letter for third run
-                    word_var = word[::-1].capitalize()
-                    word_var = word_var[::-1]
-                    variant_list.append(word_var)
-                case 2:
-                    #capitalizes all letters for last run
-                    word_var = word.upper()
-                case _:
-                    #unsure if no match will cause an error (which will happen on last run), so that's why this exists
-                    pass
+
+            if i == 0:
+                #capitalizes first char for second run
+                word_var = word.capitalize()
+            
+            elif i == 1:
+                #capitalizes last letter for third run
+                word_var = word[::-1].capitalize()
+                word_var = word_var[::-1]
+                variant_list.append(word_var)
+
+            elif i == 2:
+                #capitalizes all letters for last run
+                word_var = word.upper()
 
     else:
         letter_count = len(word)
@@ -75,34 +73,29 @@
                 else:
                     variant_list.append(word_var.replace(munging_combos[key].upper(), key))
 
-            #using new switch statement in python 3.10
-            match i:
-                case 0:
-                    #capitalizes first char
-                    word_var = str_nums+word.capitalize()
-                case 1:
-                    #capitalizes last char
-                    word_var = word[::-1].capitalize()
-                    word_var = str_nums+word_var[::-1]
-                case 2:
-                    #capitalizes full word
-                    word_var = word_var.upper()
-                case 3:
-                    #onto second half with numbers appended
-                    word_var = append_nums
-                case 4:
-                    #capitalizes first char
-                    word_var = word.capitalize()+str_nums
-                case 5:
-                    #capitalizes last char
-                    word_var = word[::-1].capitalize()
-                    word_var = word_var[::-1]+str_nums
-                case 6:
-                    #capitalizes full word
-                    word_var = word_var.upper()
-                case _:
-                    #unsure if no match will cause an error (which will happen on last run), so that's why this exists
-                    pass
+            if i == 0:
+                #capitalizes first char
+                word_var = str_nums+word.capitalize()
+            elif i == 1:
+                #capitalizes last char
+                word_var = word[::-1].capitalize()
+                word_var = str_nums+word_var[::-1]
+            elif i == 2:
+                #capitalizes full word
+                word_var = word_var.upper()
+            elif i == 3:
+                #onto second half with numbers appended
+                word_var = append_nums
+            elif i == 4:
+                #capitalizes first char
+                word_var = word.capitalize()+str_nums
+            elif i == 5:
+                #capitalizes last char
+                word_var = word[::-1].capitalize()
+                word_var = word_var[::-1]+str_nums
+            elif i == 6:
+                #capitalizes full word
+                word_var = word_var.upper()
 
     return variant_list
 
