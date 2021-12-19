@@ -3,13 +3,15 @@ from multiprocessing.dummy import Pool
 
 worker_count = 100
 
+#putting full file into memory to divide between threads (only 41kb, so it won't be an issue)
+pwds = open("A0197423_AIDAN_HERRON_hashed_pw.lst", "r")
+global lines
+lines = pwds.readlines()
+pwds.close()
+
 def crack_password(pid):
     #function for loops for cracking password. done this way to be able to utilise multiprocessing
-
-    #putting full file into memory to divide between threads (only 41kb, so it won't be an issue)
-    pwds = open("A0197423_AIDAN_HERRON_hashed_pw.lst", "r")
-    lines = pwds.readlines()
-
+    
     #used for slices for threads
     len_pwd_file = len(lines)
 
@@ -39,10 +41,10 @@ def crack_password(pid):
 
             if not word.startswith("#"):
                 if len(split_pwd[3]) == 32:
-                    print("md5 "+str(pid)+"\n")
+                    print("md5 "+str(pid)+" "+word+"\n")
                     hashes = word_variant_hashed(word, split_pwd[2])
                 elif len(split_pwd[3]) == 64:
-                    print("sha256 "+str(pid)+"\n")
+                    print("sha256 "+str(pid)+" "+word+"\n")
                     hashes = word_variant_hashed(word, split_pwd[2], False)
 
                 if split_pwd[3] in hashes:
