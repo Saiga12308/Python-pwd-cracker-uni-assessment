@@ -5,16 +5,40 @@
 
     variant_list = []
 
-    munging_combos = {
-        "@":"a",
-        "3":"e",
-        "£":"e",
-        "€":"e",
-        "!":"i",
-        "1":"i",
-        "0":"o",
-        "$":"s"
-        }
+    munging_combos = [
+        ["a", "@"],
+        ["a", "4"],
+
+        ["b", "8"],
+
+        ["e", "3"],
+        ["e", "4"],
+        ["e", "£"],
+        ["e", "€"],
+
+        ["g", "9"],
+
+        ["i", "!"],
+        ["i", "1"],
+
+        ["l", "1"],
+
+        ["o", "0"],
+
+        ["p", "9"],
+
+        ["q", "9"],
+
+        ["r", "2"],
+        ["r", "7"],
+
+        ["s", "$"],
+        ["s", "5"],
+
+        ["t", "7"],
+
+        ["z", "2"]
+        ]
 
     if len(word) >= 8:
         variant_list.append(word)
@@ -28,11 +52,11 @@
         for i in range(4):
 
             #loop to minimise code on accounting for uppercase letters
-            for key in munging_combos:
-                if word_var.replace(munging_combos[key], key) != word_var:
-                    variant_list.append(word_var.replace(munging_combos[key], key))
+            for combo in munging_combos:
+                if word_var.replace(combo[0], combo[1]) != word_var:
+                    variant_list.append(word_var.replace(combo[0], combo[1]))
                 else:
-                    variant_list.append(word_var.replace(munging_combos[key].upper(), key))
+                    variant_list.append(word_var.replace(combo[0].upper(), combo[1]))
 
 
             if i == 0:
@@ -67,11 +91,11 @@
         for i in range(8):
 
             #loop to minimise code on accounting for uppercase letters
-            for key in munging_combos:
-                if word_var.replace(munging_combos[key], key) != word_var:
-                    variant_list.append(word_var.replace(munging_combos[key], key))
+            for combo in munging_combos:
+                if word_var.replace(combo[0], combo[1]) != word_var:
+                    variant_list.append(word_var.replace(combo[0], combo[1]))
                 else:
-                    variant_list.append(word_var.replace(munging_combos[key].upper(), key))
+                    variant_list.append(word_var.replace(combo[0].upper(), combo[1]))
 
             if i == 0:
                 #capitalizes first char
@@ -104,7 +128,6 @@ def word_variant_hashed(word, salt, md5=True):
 
     variant_list = word_variant_unhashed(word)
     hashed_variant_dict = {}
-    hashed_variant = ""
 
     for variant in variant_list:
 
