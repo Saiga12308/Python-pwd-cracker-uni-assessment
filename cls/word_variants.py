@@ -1,6 +1,8 @@
 ﻿def word_variant_unhashed(word):
     #generates a list of all variations of a word and returns as list
 
+    import itertools
+
     word_var = word
 
     variant_list = []
@@ -51,12 +53,14 @@
         #appends munges and variations on the munges
         for i in range(4):
 
-            #loop to minimise code on accounting for uppercase letters
-            for combo in munging_combos:
-                if word_var.replace(combo[0], combo[1]) != word_var:
-                    variant_list.append(word_var.replace(combo[0], combo[1]))
-                else:
-                    variant_list.append(word_var.replace(combo[0].upper(), combo[1]))
+            #goes through every combination of rules possible
+            for i in range(0, len(munging_combos)+1):
+                for subset in itertools.combinations(munging_combos, i):
+                    for munging_rule in subset:
+                        if word_var.replace(munging_rule[0], munging_rule[1]) != word_var:
+                            variant_list.append(word_var.replace(munging_rule[0], munging_rule[1]))
+                        else:
+                            variant_list.append(word_var.replace(munging_rule[0].upper(), munging_rule[1]))
 
 
             if i == 0:
@@ -90,12 +94,14 @@
 
         for i in range(8):
 
-            #loop to minimise code on accounting for uppercase letters
-            for combo in munging_combos:
-                if word_var.replace(combo[0], combo[1]) != word_var:
-                    variant_list.append(word_var.replace(combo[0], combo[1]))
-                else:
-                    variant_list.append(word_var.replace(combo[0].upper(), combo[1]))
+            #goes through every combination of rules possible
+            for i in range(0, len(munging_combos)+1):
+                for subset in itertools.combinations(munging_combos, i):
+                    for munging_rule in subset:
+                        if word_var.replace(munging_rule[0], munging_rule[1]) != word_var:
+                            variant_list.append(word_var.replace(munging_rule[0], munging_rule[1]))
+                        else:
+                            variant_list.append(word_var.replace(munging_rule[0].upper(), munging_rule[1]))
 
             if i == 0:
                 #capitalizes first char

@@ -1,7 +1,7 @@
 ﻿from cls.word_variants import word_variant_hashed
 from multiprocessing.dummy import Pool
 
-
+worker_count = 100
 
 def crack_password(pid):
     #function for loops for cracking password. done this way to be able to utilise multiprocessing
@@ -15,8 +15,8 @@ def crack_password(pid):
 
     pwds.close()
 
-    slice_a = int((pid/20) * len_pwd_file)
-    slice_b = int((((pid+1) / 20) * len_pwd_file) -1)
+    slice_a = int((pid/worker_count) * len_pwd_file)
+    slice_b = int((((pid+1) / worker_count) * len_pwd_file) -1)
 
     list_pwds = lines[slice_a:slice_b]
 
@@ -39,11 +39,11 @@ def crack_password(pid):
 
             if not word.startswith("#"):
                 if len(split_pwd[3]) == 32:
+                    print("md5 "+str(pid)+"\n")
                     hashes = word_variant_hashed(word, split_pwd[2])
-                    print("md5")
                 elif len(split_pwd[3]) == 64:
+                    print("sha256 "+str(pid)+"\n")
                     hashes = word_variant_hashed(word, split_pwd[2], False)
-                    print("sha256")
 
                 if split_pwd[3] in hashes:
                     correct_passwords.write(split_pwd[0] + ":" + hashes[split_pwd[3]] + "\n")
@@ -54,6 +54,6 @@ def crack_password(pid):
 #creating the threads
 if __name__ == "__main__":
 
-    pool = Pool(20)
+    pool = Pool(worker_count)
 
-    pool.map(crack_password, range(20))
+    pool.map(crack_password, range(worker_count))
