@@ -48,6 +48,7 @@
         for variant in word_var_list:
             variant_list.append(variant+individual_date)
 
+    del word_var_list
     return variant_list
 
 def word_variant_hashed(word, salt, dates, md5=True):
@@ -73,4 +74,6 @@ def word_variant_hashed(word, salt, dates, md5=True):
         #pushes hex hash and the password to a dictionary in hash:password
         hashed_variant_dict[hashed_variant_prepend.hexdigest()] = variant
         hashed_variant_dict[hashed_variant_append.hexdigest()] = variant
+
+    del variant_list
     return hashed_variant_dict
