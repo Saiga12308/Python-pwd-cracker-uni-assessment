@@ -1,10 +1,10 @@
-﻿def word_variant_unhashed(word):
+﻿def word_variant_unhashed(word, date_list):
     #generates a list of all variations of a word and returns as list
 
-    from string import punctuation
-    import itertools
+    #import itertools
 
     word_var = word
+    word_var_list = []
 
     variant_list = []
 
@@ -20,21 +20,40 @@
         ["w", "m"],
         ["m", "w"]
         ]
-    
-    if len(word) == 10:
-        word_var = (word+word[0]).upper()
-    
-    elif len(word) >= 12:
-        word_var = word[0:10].upper()
+
 
     
+    if len(word) == 10:
+        word_var = (word+word[0])
+        word_var_upper = word_var.upper()
+    
+    elif len(word) >= 12:
+        word_var = word[0:10]
+        word_var_upper = word_var.upper()
+
+    else:
+        word_var_upper = word.upper()
+
+    for combo in munging_combos:
+        for symbol in special_chars:
+            word_var_list.append(symbol + word_var.replace(combo[0], combo[1]))
+            word_var_list.append(word_var.replace(combo[0], combo[1]) + symbol)
+            
+            combo[0] = combo[0].upper()
+
+            word_var_list.append(symbol + word_var_upper.replace(combo[0], combo[1]))
+            word_var_list.append(word_var_upper.replace(combo[0], combo[1]) + symbol)
+    
+    for individual_date in date_list:
+        for variant in word_var_list:
+            variant_list.append(variant+individual_date)
 
     return variant_list
 
-def word_variant_hashed(word, salt, md5=True):
+def word_variant_hashed(word, salt, dates, md5=True):
     import hashlib
 
-    variant_list = word_variant_unhashed(word)
+    variant_list = word_variant_unhashed(word, dates)
     hashed_variant_dict = {}
 
     for variant in variant_list:

@@ -2,27 +2,32 @@
 from multiprocessing.dummy import Pool
 from datetime import date, timedelta
 
-worker_count = 100
+worker_count = 20
 
-#putting full file into memory to divide between threads (only 41kb, so it won't be an issue)
+#putting full file into memory to divide between threads (only 41kb, so it shouldn't be an issue)
 pwds = open("A0197423_AIDAN_HERRON_hashed_pw.lst", "r")
 global lines
 lines = pwds.readlines()
 pwds.close()
 
-global dict_file
-dict_file = open("ow_tiny_lower.lst", "r")
 
 
+#getting all dates in a list so it doesn't have to be generated each time a process wants to access them
+date_list = []
 
-start_date = date(2008, 8, 15) 
-end_date = date(2008, 9, 15)    # perhaps date.now()
+start_date = date(2000, 1, 1) 
+end_date = date(2003, 12, 31)
 
 delta = end_date - start_date   # returns timedelta
 
 for i in range(delta.days + 1):
     day = start_date + timedelta(days=i)
-    print(day)
+    day = str(day).split("-")
+
+    date_list.append(day[0]+day[1]+day[2])
+    date_list.append(day[2]+day[1]+day[0])
+
+
 
 def crack_password(pid):
     #function for loops for cracking password. done this way to be able to utilise multiprocessing
@@ -36,6 +41,8 @@ def crack_password(pid):
     slice_b = int((((pid+1) / worker_count) * len_pwd_file) -1)
 
     list_pwds = lines[slice_a:slice_b]
+
+    dict_file = open("ow_tiny_lower.lst", "r")
     
     correct_passwords = open("A0197423_Aidan_Herron_cracked_pw.lst", "a")
 
@@ -58,12 +65,12 @@ def crack_password(pid):
                 if len(split_pwd[3]) == 32:
 
                     print("md5 "+str(pid)+" "+word+"\n")
-                    hashes = word_variant_hashed(word, split_pwd[2])
+                    hashes = word_variant_hashed(word, split_pwd[2], date_list)
 
                 elif len(split_pwd[3]) == 64:
 
                     print("sha256 "+str(pid)+" "+word+"\n")
-                    hashes = word_variant_hashed(word, split_pwd[2], False)
+                    hashes = word_variant_hashed(word, split_pwd[2], date_list, False)
 
                 if split_pwd[3] in hashes:
                     correct_passwords.write(split_pwd[0] + ":" + hashes[split_pwd[3]] + "\n")
@@ -78,3 +85,5 @@ if __name__ == "__main__":
     pool = Pool(worker_count)
 
     pool.map(crack_password, range(worker_count))
+
+    del lines
