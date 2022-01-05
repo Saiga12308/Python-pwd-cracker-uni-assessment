@@ -39,7 +39,7 @@ def crack_password(pid):
     pwds.close()
 
     slice_a = int((pid/worker_count) * len_pwd_file)
-    slice_b = int((((pid+1) / worker_count) * len_pwd_file) -1)
+    slice_b = int(((pid+1) / worker_count) * len_pwd_file)
 
     list_pwds = lines[slice_a:slice_b]
 
@@ -74,7 +74,7 @@ def crack_password(pid):
                     correct_passwords = open("A0197423_Aidan_Herron_cracked_pw.lst", "a")
 
                     correct_passwords.write(split_pwd[0] + ":" + hashes[split_pwd[3]] + "\n")
-                    print("Cracked a password!")
+                    print("\n\n\n\n#################### Cracked a password! #####################\n\n\n\n")
 
                     correct_passwords.close()
                     break

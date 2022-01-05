@@ -27,21 +27,24 @@
     
         if len(word) == 10:
             word_var = (word+word[0])
-            word_var = word_var.upper()
+            word_var = word_var.capitalize()
     
         elif len(word) >= 12:
             word_var = word[0:10]
-            word_var = word_var.upper()
+            word_var = word_var.capitalize()
 
         else:
-            word_var = word.upper()
+            word_var = word_var.capitalize()
 
         for combo in munging_combos:
             for symbol in special_chars:
-                combo[0] = combo[0].upper()
+                if combo[0] not in word_var:
+                    combo[0] = combo[0].upper()
 
-                word_var_list.append(symbol + word_var.replace(combo[0], combo[1]))
-                word_var_list.append(word_var.replace(combo[0], combo[1]) + symbol)
+                munged_var = word_var.replace(combo[0], combo[1])
+
+                word_var_list.append(symbol + munged_var)
+                word_var_list.append(munged_var + symbol)
     
         for individual_date in date_list:
             for variant in word_var_list:
