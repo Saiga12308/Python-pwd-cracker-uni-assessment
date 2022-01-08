@@ -18,6 +18,23 @@ def a():
 
     s = WordVarGen()
 
-    print(s.word_variant_hashed(word="tenletters", salt="BtwuyC", dates=date_list))
+    yeet = s.word_variant_hashed_test("dpqbwm", "1234", date_list)
 
+    test = checkIfDuplicates(yeet)
+
+    print(yeet)
+
+    print(len(yeet))
+
+    if test:
+        print("no dupes")
+    else:
+        print("dupes")
+
+def checkIfDuplicates(listOfElems):
+    ''' Check if given list contains any duplicates '''
+    if len(listOfElems) == len(set(listOfElems)):
+        return False
+    else:
+        return True
 a()

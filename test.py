@@ -1,16 +1,14 @@
-worker_count = 50
-pid = 49
+import time
+import curses
+import locale
 
-pwds = open("A0197423_AIDAN_HERRON_hashed_pw.lst", "r")
-lines = pwds.readlines()
+locale.setlocale(locale.LC_ALL, '')
+code = locale.getpreferredencoding()
 
-len_pwd_file = len(lines)
+def pbar(window):
+    for i in range(10):
+        window.addstr(10, 10, "[" + ("=" * i) + ">" + (" " * (10 - i )) + "]")
+        window.refresh()
+        time.sleep(0.5)
 
-pwds.close()
-
-slice_a = int((pid/worker_count) * len_pwd_file)
-slice_b = int((((pid+1) / worker_count) * len_pwd_file))
-
-print(lines[slice_a:slice_b])
-#print(int((pid/worker_count) * len_pwd_file))
-#print(int((((pid+1) / worker_count) * len_pwd_file) -1))
+curses.wrapper(pbar)
