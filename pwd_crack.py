@@ -3,7 +3,7 @@ from multiprocessing import Pool
 from datetime import date, timedelta
 from cls.word_variants import WordVarGen
 
-worker_count = 50
+worker_count = 20
 
 #putting full file into memory to divide between threads (only 41kb, so it shouldn't be an issue)
 pwds = open("A0197423_AIDAN_HERRON_hashed_pw.lst", "r")
@@ -26,6 +26,7 @@ for i in range(delta.days + 1):
 
     date_list.append(day[0]+day[1]+day[2])
     date_list.append(day[2]+day[1]+day[0])
+
 
 def cls():
     # used later to clear the terminal so it's easy to see when you cracked a password
@@ -100,7 +101,6 @@ def crack_password(pid):
 
 #creating the processes
 if __name__ == "__main__":
-
     pool = Pool(worker_count)
 
     pool.map(crack_password, range(worker_count))

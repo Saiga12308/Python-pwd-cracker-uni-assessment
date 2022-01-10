@@ -1,0 +1,14 @@
+2022-01-10 17:13:52.097178 : saiga : Connected to 127.0.0.1 : Successful
+2022-01-10 17:14:25.698604 : saiga : Executed 'cd Desktop; mkdir hi' : Successful
+2022-01-10 17:14:45.930670 : saiga : Disconnected from 127.0.0.1 : Successful
+2022-01-10 17:17:04.182048 : a : Attempted connection to 1: Failed: [Errno 11001] getaddrinfo failed
+2022-01-10 17:17:19.441238 : a : Attempted connection to 127.0.0.1: Failed: Authentication failed.
+2022-01-10 17:20:15.729821 : saiga : Connected to 127.0.0.1 : Successful
+2022-01-10 17:20:17.784683 : saiga : Executed 'a': Failed: bash: a: command not found
+2022-01-10 17:20:28.693107 : saiga : Executed 'wait' : Successful
+2022-01-10 17:20:33.424941 : saiga : Executed 's': Failed: bash: s: command not found
+2022-01-10 17:22:53.210587 : saiga : Disconnected from 127.0.0.1 : Successful
+2022-01-10 18:43:06.539767 : saiga : Attempted connection to 127.0.0.1: Failed: Authentication failed.
+2022-01-10 18:43:18.624898 : saiga : Connected to 127.0.0.1 : Successful
+2022-01-10 18:43:22.622102 : saiga : Executed 'dir' : Successful
+2022-01-10 18:43:24.453926 : saiga : Disconnected from 127.0.0.1 : Successful
